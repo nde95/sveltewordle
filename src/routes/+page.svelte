@@ -1,5 +1,6 @@
 <script>
     let letterGuesses = Array(5).fill(""); // Array to store user input for letter guesses
+    let letterStates = Array(5).fill(null); // Store state for each letter (correct position, correct letter, or incorrect)
     // let guessArray = Array(5).fill(letterGuesses) // Array to store multiple guess
     let word = "apple"; // The word to guess
 
@@ -23,7 +24,7 @@
     const playerGuess = letterGuesses.join('')
     const wordSplit = word.split('')
 
-    let correctletters = 0
+    let correctLetters = 0
     let correctPositions = 0
 
     if (playerGuess.length !== wordSplit.length) {
@@ -32,13 +33,16 @@
     }
     
     for (let i = 0; i < playerGuess.length; i++) {
-        if (wordSplit.includes(playerGuess[i])) {
-            correctletters++
-        }
-        if (wordSplit[i] == playerGuess[i]) {
-            correctPositions++
-        }
-    }
+      if (wordSplit[i] == playerGuess[i]) {
+        letterStates[i] = 'correctPosition';
+        correctPositions++;
+      } else if (wordSplit.includes(playerGuess[i])) {
+        letterStates[i] = 'correctLetter';
+        correctLetters++;
+      } else {
+        letterStates[i] = 'incorrect';
+      }
+}
     
     if (correctPositions == 5) {
         alert("you guessed the word correctly")
@@ -57,7 +61,7 @@
     </h1>
     <div class="guess-container">
       {#each letterGuesses as guess, index (index)}
-        <div class="guess-slot">
+      <div class="guess-slot" class:correct-position={letterStates[index] === 'correctPosition'} class:correct-letter={letterStates[index] === 'correctLetter'} class:incorrect={letterStates[index] === 'incorrect'}>
           <p class="letter-guess">
             {guess}
           </p>
@@ -105,6 +109,18 @@
         height: 75px;
         width: 75px;
         box-sizing: border-box;
+    }
+
+    .correct-position {
+      background-color: green;
+    }
+
+    .correct-letter {
+      background-color: yellow;
+    }
+
+    .incorrect {
+      background-color: grey;
     }
 
     .letter-guess {
