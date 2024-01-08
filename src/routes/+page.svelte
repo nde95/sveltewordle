@@ -1,8 +1,20 @@
 <script>
+    import { words as WordList} from "./words.js"
+    import { onMount } from 'svelte';
+
     let letterGuesses = Array(5).fill(""); // Array to store user input for letter guesses
     let letterStates = Array(5).fill(null); // Store state for each letter (correct position, correct letter, or incorrect)
     // let guessArray = Array(5).fill(letterGuesses) // Array to store multiple guess
-    let word = "apple"; // The word to guess
+    let word 
+
+    onMount(() => {
+      word = GetNewWord()
+    })
+
+    function GetNewWord() {
+      const randomWordIndex = Math.floor(Math.random() * WordList.length)
+      return WordList[randomWordIndex]
+    } 
 
     function handleLetterClick(letter) {
     const emptyIndex = letterGuesses.indexOf("");
