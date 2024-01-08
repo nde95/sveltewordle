@@ -1,5 +1,6 @@
 <script>
     let letterGuesses = Array(5).fill(""); // Array to store user input for letter guesses
+    // let guessArray = Array(5).fill(letterGuesses) // Array to store multiple guess
     let word = "apple"; // The word to guess
 
     function handleLetterClick(letter) {
@@ -18,7 +19,37 @@
     }
   }
 
-  </script>
+  function handleSubmit(index) {
+    const playerGuess = letterGuesses.join('')
+    const wordSplit = word.split('')
+
+    let correctletters = 0
+    let correctPositions = 0
+
+    if (playerGuess.length !== wordSplit.length) {
+        alert("guess is not long enough")
+        return
+    }
+    
+    for (let i = 0; i < playerGuess.length; i++) {
+        if (wordSplit.includes(playerGuess[i])) {
+            correctletters++
+        }
+        if (wordSplit[i] == playerGuess[i]) {
+            correctPositions++
+        }
+    }
+    
+    if (correctPositions == 5) {
+        alert("you guessed the word correctly")
+    }
+    
+
+    console.log("answer includes:", correctletters, "correct letters")
+    console.log("answer includes:", correctPositions, "correct positions")
+  }
+
+</script>
   
   <div class="game-container">
     <h1 class="title">
@@ -51,6 +82,9 @@
     {/each}
     <button class="grid" on:click={handleBackspace}>
         Del
+    </button>
+    <button class="grid" on:click={handleSubmit}>
+        Ent
     </button>
     </div>
   </div>
@@ -98,7 +132,7 @@
         background-color: #e0ded7;
         padding: 10px;
         text-align: center;
-        margin: 5px;
+        margin: 2px;
         border-radius: 5px;
         box-sizing: border-box;
     }
